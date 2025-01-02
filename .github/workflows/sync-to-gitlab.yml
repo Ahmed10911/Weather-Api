@@ -1,0 +1,27 @@
+name: Sync GitHub to GitLab
+
+on:
+  push:
+    branches:
+      - main  # Or any branch you want to track
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "ahmed"
+          git config --global user.email "221096@students.au.edu.pk"
+
+      - name: Add GitLab as a remote
+        run: |
+          git remote add gitlab https://${{ secrets.GITLAB_TOKEN }}@${{ secrets.GITLAB_REPO_URL }}
+
+      - name: Push to GitLab
+        run: |
+          git push --force gitlab main
